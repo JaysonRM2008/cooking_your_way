@@ -1,1 +1,1 @@
-# cooking_your_way
+# cooking-your-way
