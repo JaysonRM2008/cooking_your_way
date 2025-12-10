@@ -30,7 +30,7 @@ def browse():
 
     cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM `product` ") 
+    cursor.execute("SELECT * FROM `Product` ") 
 
     result = cursor.fetchall()
     connection .close() 
