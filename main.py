@@ -21,8 +21,9 @@ def connect_db():
     return conn
 
 @app.route("/")
-def home():
+def homepage():  
     return render_template("homepage.html.jinja")
+
 
 @app.route("/browse")
 def browse():
@@ -36,3 +37,17 @@ def browse():
     connection .close() 
 
     return render_template("browse.html.jinja", products=result)
+
+@app.route("/product/<product_id>")
+def product_page(product_id):
+    connection = connect_db()
+
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM `Product` WHERE `ID` = %s", (product_id,) )
+
+    result = cursor.fetchone()
+
+    connection .close() 
+
+    return render_template("product.html.jinja", product=result)
