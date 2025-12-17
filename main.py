@@ -1,5 +1,7 @@
 from flask import Flask, render_template , request, flash, redirect
 
+from flask_login import LoginManager, login_user
+
 import pymysql 
 
 from dynaconf import Dynaconf 
@@ -10,6 +12,39 @@ app = Flask(__name__)
 config = Dynaconf(settings_files=["settings.toml"],)
 
 app.secret_key = config.secret_key
+
+login_manager = LoginManager(app)
+
+class User:
+    is_authenticated = True
+    is_active = True
+    is_anonymous = False
+
+    def __init__(self, result):
+        self.name = result['Name']
+        self.email = result['Email']
+        self.address = result['Address']
+        self.id = result['ID']
+    def get_id(self):
+        return str(self.id)
+    
+@login_manager.user_loader    
+def load_user(user_id):
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT * FROM `User` WHERE `ID` = %s", (user_id,))
+
+    result = cursor.fetchone()
+    connection.close()
+
+    if result is None:
+        return None
+    return User(result)
+
+
+
+
 
 def connect_db(): 
     conn = pymysql.connect(
@@ -76,33 +111,50 @@ def register():
             connection = connect_db()
 
             cursor = connection.cursor()
-
+       
+        try:    
             cursor.execute("""
                 INSERT INTO `User` ( `Name`, `Email`, `Password`, `Address`)
-                        VALUES (%s, %s, %s, %s)
-    """, (name, email, password, address) )
-    
-        return redirect('/login')
-    
-    return render_template("register.html.jinja")
+                            VALUES (%s, %s, %s, %s)
+                """, (name, email, password, address))
+            connection.close()
 
+        except pymysql.err.IntegrityError: 
+                flash("Email already registered!")
+                connection.close()
+        else:
+            return redirect('/login')
+        
+        return render_template("register.html.jinja")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        email = request.form.get("email")
-        password = request.form.get("password")
+
+        email = request.form.get('email')
+        password = request.form.get('password')
 
         connection = connect_db()
+
         cursor = connection.cursor()
 
-        cursor.execute("SELECT * FROM User WHERE Email = %s", (email,))
-        user = cursor.fetchone()
         connection.close()
 
-        if user is None:
-            return "Email not found"
+        cursor.execute("SELECT * FROM `User` WHERE `Email` = %s", (email,))
+
+        result = cursor.fetchone()
+
+        connection.close()
+
+        if result is None:
+            flash("Email not registered!")
+        elif password != result['Password']:
+            flash("Incorrect password!")
+        else:
+            login_user(User(result))
+            return redirect('/browse')
+       
         
     return render_template("login.html.jinja")
 
