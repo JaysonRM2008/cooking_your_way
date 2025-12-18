@@ -1,55 +1,55 @@
 <!-- Left Sidebar Navigation -->
 <nav class="fixed top-0 left-0 h-full w-64 bg-white shadow-md border-r border-gray-200 z-20">
-    <div class="flex flex-col h-full p-6">
+  <div class="flex flex-col h-full p-6">
 
-{{current_user.email }}
+    <!-- User Info -->
+    {% if current_user.is_authenticated %}
+      <p class="mb-6 text-gray-800 font-semibold">
+        Hi {{ current_user.name }}
+      </p>
+    {% endif %}
 
-        <!-- Navigation Links -->
-        <ul class="flex flex-col space-y-6 text-lg">
+    <!-- Navigation Links -->
+    <ul class="flex flex-col space-y-6 text-lg">
 
-            <li>
-                <a href="/" class="text-white-600 hover:text-blue-600 transition duration-300 font-medium">Home</a>
-            </li>
+      <li>
+        <a href="/" class="text-gray-600 hover:text-blue-600 font-medium transition">
+          Home
+        </a>
+      </li>
 
-            <li>
-                <a href="/browse" class="text-gray-600 hover:text-blue-600 transition duration-300 font-medium">Browse</a>
-            </li>
+      <li>
+        <a href="/browse" class="text-gray-600 hover:text-blue-600 font-medium transition">
+          Browse
+        </a>
+      </li>
 
-            {%if not current_user.is_authenticated %}
-           <li>
-                <a href="/login" class="text-gray-600 hover:text-blue-600 transition duration-300 font-medium">Login</a>
-            </li>
-            {%else%}
-            <div>
-            Hi {{ current_user.name }}
-            </div>
-{% endif %}
+      {% if not current_user.is_authenticated %}
+        <li>
+          <a href="/login" class="text-gray-600 hover:text-blue-600 font-medium transition">
+            Login
+          </a>
+        </li>
+      {% else %}
+        <li>
+          <a href="/logout" class="text-gray-600 hover:text-blue-600 font-medium transition">
+            Logout
+          </a>
+        </li>
+      {% endif %}
 
-            <li>
-                <a href="/cart" class="text-gray-600 hover:text-blue-600 transition duration-300 font-medium"></a>
-            </li>
+      <li>
+        <a href="/cart" class="text-gray-600 hover:text-blue-600 font-medium transition">
+          Cart
+        </a>
+      </li>
 
-            <!-- Extra Links -->
+      <li>
+        <a href="/conatct" class="text-gray-600 hover:text-blue-600 font-medium transition">
+          Conatct
+        </a>
+      </li>
 
-  {# 
-            <li>
-                <a href="/contact" class="text-gray-600 hover:text-blue-600 transition duration-300 font-medium">Contact</a>
-            </li>
-        </ul> #}
-
-
-        <!-- Floating Cart Button (Bottom-Left) -->
-<div class="fixed bottom-4 left-4 z-50">
-    <a href="/cart"
-       class="flex items-center space-x-2 px-5 py-3 rounded-full bg-yellow-500 text-white font-bold hover:bg-yellow-600 shadow-lg transition">
-        <!-- Cart Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M6 21h.01M18 21h.01" />
-        </svg>
-        <span>Cart</span>
-    </a>
-</div>
-
-    </div>
+    </ul>
+  </div>
 </nav>
-

@@ -6,61 +6,58 @@
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <title>HomePage</title>
 </head>
+
 <body class="bg-gray-100 min-h-screen">
 
-  <!-- Navbar -->
+  <!-- Navbar (Left Sidebar) -->
   {% include "components/navbar.html.jinja" %}
+<!-- Page Content (pushed right of navbar) -->
+<div class="ml-64 flex justify-center my-8">
 
-  <!-- Floating Buttons (Top Right) -->
-  <div class="fixed top-4 right-4 flex space-x-4 z-50">
-    {% if not user %}
-      <!-- Show if user is NOT logged in -->
-      <a href="/login"
-         class="px-5 py-2 rounded-full border-2 border-blue-500 text-blue-500 font-bold hover:bg-blue-50 transition">
-          Login
-      </a>
+  <div class="relative w-full max-w-4xl">
 
-      <a href="/register"
-         class="px-5 py-2 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700 transition">
-          Register
-      </a>
-    {% else %}
-      <!-- Show if user IS logged in -->
-      <a href="/user"
-         class="flex items-center space-x-2 px-5 py-2 rounded-full bg-gray-800 text-white font-bold hover:bg-gray-900 transition">
-          <!-- User Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A9 9 0 1119.879 17.8 9 9 0 015.12 17.804z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 11a4 4 0 100-8 4 4 0 000 8z" />
-          </svg>
-          <span>{{ user['Name'] }}</span>
-      </a>
-    {% endif %}
+    <!-- Overlay text -->
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center z-10">
+      <h1 class="text-4xl font-extrabold underline text-white mb-4 drop-shadow-lg">
+        Welcome to the Homepage
+      </h1>
+      <p class="text-lg font-semibold text-white max-w-2xl drop-shadow-md">
+        Browse our premium recipes, products, and culinary tips.
+      </p>
+    </div>
+
+    <!-- Dark overlay -->
+    <div class="absolute inset-0 bg-black/40 rounded-xl"></div>
+
+    <!-- GIF -->
+    <img
+      src="/static/product/2620043-uhd_3840_2160_25fps-ezgif.com-speed.gif"
+      class="w-full max-h-[400px] object-cover rounded-xl shadow-lg border-2 border-gray-300"
+      alt="Homepage Promo"
+    >
+
   </div>
 
-  <!-- Page Content -->
-  <div class="pt-24 px-4 flex flex-col items-center">
-    
-    <!-- Welcome Message -->
-    <h1 class="text-3xl font-bold underline text-gray-800 mb-6 text-center">
-      Welcome to the Homepage
-    </h1>
+</div>
 
-    <p class="text-center text-gray-700 text-lg mb-8">
-      Browse our premium recipes, products, and culinary tips.
-    </p>
 
-    <!-- Search Bar (Below Text) -->
-    <form action="/browse" method="GET" class="w-full max-w-md">
-      <div class="flex">
-        <input type="text" name="q" placeholder="Search for products..."
-               class="flex-grow p-3 rounded-l-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"/>
-        <button type="submit"
-                class="bg-blue-600 text-white px-5 rounded-r-xl font-semibold hover:bg-blue-700 transition">
-          Search
-        </button>
-      </div>
-    </form>
+
+</div>
+
+    <!-- Floating Cart Button (Top Right) -->
+    <div class="fixed top-4 right-4 z-50">
+      <a href="/cart"
+         class="flex items-center space-x-2 px-5 py-3 rounded-full bg-yellow-500 text-white font-bold hover:bg-yellow-600 shadow-lg transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M6 21h.01M18 21h.01" />
+        </svg>
+        <span>Cart</span>
+      </a>
+    </div>
+
+
 
   </div>
 

@@ -1,6 +1,6 @@
-from flask import Flask, render_template , request, flash, redirect
+from flask import Flask, render_template , request, flash, redirect, abort
 
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user, login_required
 
 import pymysql 
 
@@ -14,6 +14,8 @@ config = Dynaconf(settings_files=["settings.toml"],)
 app.secret_key = config.secret_key
 
 login_manager = LoginManager(app)
+
+login_manager.login_view = "/login"
 
 class User:
     is_authenticated = True
@@ -41,7 +43,6 @@ def load_user(user_id):
     if result is None:
         return None
     return User(result)
-
 
 
 
@@ -85,8 +86,10 @@ def product_page(product_id):
 
     result = cursor.fetchone()
 
-    connection .close() 
+    connection.close() 
 
+    if result is None:
+        abort(404)
     return render_template("product.html.jinja", product=result)
 
 
@@ -104,6 +107,7 @@ def register():
 
         if password != confirm_password:
             flash("Passwords do not match!")
+            
         elif len(password) < 8:
             flash("Password must be at least 8 characters long!")
             flash("password is too short")
@@ -139,11 +143,12 @@ def login():
 
         cursor = connection.cursor()
 
-        connection.close()
 
         cursor.execute("SELECT * FROM `User` WHERE `Email` = %s", (email,))
-
         result = cursor.fetchone()
+
+        print(cursor)
+
 
         connection.close()
 
@@ -157,6 +162,12 @@ def login():
        
         
     return render_template("login.html.jinja")
+
+@app.route("/logout", methods=["POST", "GET"])
+@login_required
+def logout():
+    logout_user()
+    return redirect('/') 
 
 
 
