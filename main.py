@@ -1,6 +1,6 @@
 from flask import Flask, render_template , request, flash, redirect, abort
 
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 import pymysql 
 
@@ -78,6 +78,7 @@ def browse():
 
 @app.route("/product/<product_id>")
 def product_page(product_id):
+
     connection = connect_db()
 
     cursor = connection.cursor()
@@ -91,6 +92,32 @@ def product_page(product_id):
     if result is None:
         abort(404)
     return render_template("product.html.jinja", product=result)
+
+
+@app.route("/product/<product_id>/add_to_cart", methods=["POST"])
+@login_required
+def add_to_cart(product_id):
+
+    quantity = request.form["qty"]
+
+    connection = connect_db()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO `Cart` (`quantity`, `ProductID`, `UserID`)
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+        `Quantity` = `Quantity` + %s
+    """ , (quantity, product_id, current_user.id, quantity) )
+    
+    
+    connection.close()
+
+
+
+    return redirect('/cart')
+
+
 
 
 @app.route("/register", methods=["POST", "GET"])
@@ -107,7 +134,7 @@ def register():
 
         if password != confirm_password:
             flash("Passwords do not match!")
-            
+
         elif len(password) < 8:
             flash("Password must be at least 8 characters long!")
             flash("password is too short")
@@ -170,7 +197,3 @@ def logout():
     return redirect('/') 
 
 
-
-   
-
-     
