@@ -72,7 +72,7 @@ def browse():
     cursor.execute("SELECT * FROM `Product` ") 
 
     result = cursor.fetchall()
-    connection .close() 
+    connection.close() 
 
     return render_template("browse.html.jinja", products=result)
 
@@ -117,7 +117,23 @@ def add_to_cart(product_id):
 
     return redirect('/cart')
 
+@app.route("/cart")
+@login_required
+def cart():
+    connection = connect_db()
 
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT * FROM `Cart` 
+        JOIN `Product` ON `Cart`.`ProductID` = `Cart`.`ProductID`
+        WHERE `UserID` =  %s 
+        """, (current_user.id,) )
+    result = cursor.fetchall()
+
+    connection.close()
+
+
+    return render_template("cart.html.jinja", cart=result)
 
 
 @app.route("/register", methods=["POST", "GET"])

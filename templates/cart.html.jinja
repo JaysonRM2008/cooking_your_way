@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Cart</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+{% include "components/navbar.html.jinja" %}
+
+<main class="ml-64 max-w-4xl mx-auto p-6 pt-24">
+
+  <h1 class="text-3xl font-bold mb-6">
+    Your Shopping Cart
+  </h1>
+
+  {% for x in cart %}
+  <div class="flex items-center bg-white rounded-lg shadow p-4 mb-4 gap-6">
+
+    <img src="{{ x['Image'] }}" class="h-28 w-28 object-contain rounded border" >
+
+
+ 
+   <div> {{ x['Name'] }}</div>
+
+
+     <div>{{x['Quantity']}}</div>
+    
+    <!-- Price -->
+    <div> ${{ x['Price'] }} </div>
+    {#
+    <div> ${{x['price'] * x['Quantity'] }}</div> #}
+
+  </div>
+
+  {% endfor %}
+
+</main>
+
+</body>
+</html>

@@ -18,7 +18,7 @@
         {{ product['Name'] }}
       </h1>
 
-      <!-- Product Image (RESPONSIVE FIX) -->
+      <!-- Product Image -->
       <img
         src="{{ product['Image'] }}"
         alt="{{ product['Name'] }}"
@@ -35,37 +35,56 @@
         {{ product['Description'] }}
       </div>
 
+      <!-- ADD TO CART FORM (THIS IS REQUIRED) -->
+      <form
+        method="post"
+        action="/product/{{ product['ID'] }}/add_to_cart"
+        class="mt-8"
+      >
+
+        <!-- Quantity -->
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <label class="font-semibold text-gray-700">
+            Quantity:
+          </label>
+
+          <input
+            type="number"
+            name="qty"
+            value="1"
+            min="1"
+            class="w-20 border border-gray-300 rounded-md px-2 py-1 text-center
+                   focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          >
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button
+            type="submit"
+            class="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600
+                   text-white font-bold px-6 py-3 rounded-lg shadow-md
+                   transition transform hover:scale-105"
+          >
+
+            <!-- Cart Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-5 w-5 mr-2"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M6 21h.01M18 21h.01" />
+            </svg>
+
+            Add to Cart
+          </button>
+        </div>
+
+      </form>
+
     </div>
-
-   <!-- Cart Function  -->
-<form method="post" action="/product/{{ product['ID'] }}/add_to_cart">
-   <label>Qty:</label>
-
-   <input name="qty" type="number" name="qty" value="1" min="1" max="2" >  
-
-<!-- Submit Button -->
-  <div class="my-6 flex justify-center">
-    <button
-      type="submit"
-      class="flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-6 py-3 rounded-lg shadow-md transition transform hover:scale-105"
-    >
-
-      <!-- Cart Icon -->
-      <svg xmlns="http://www.w3.org/2000/svg"
-           class="h-5 w-5 mr-2"
-           fill="none"
-           viewBox="0 0 24 24"
-           stroke="currentColor"
-           stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 7h13L17 13M6 21h.01M18 21h.01" />
-      </svg>
-
-      Add to Cart
-    </button>
-  </div>
-
-</form>
 
   </body>
 </html>
