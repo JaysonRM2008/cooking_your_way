@@ -135,44 +135,45 @@ def cart():
 
     return render_template("cart.html.jinja", cart=result)
 
-
-@app.route("/register", methods=["POST", "GET"])
+@app.route("/register", methods=["GET", "POST"])
 def register():  
     if request.method == "POST":
         name = request.form["name"]
-
         email = request.form["email"]
-
         password = request.form["password"]
         confirm_password = request.form["confirm_password"]
-
         address = request.form["address"]
 
+        # Validation
         if password != confirm_password:
             flash("Passwords do not match!")
+            return render_template("register.html.jinja")
 
-        elif len(password) < 8:
+        if len(password) < 8:
             flash("Password must be at least 8 characters long!")
-            flash("password is too short")
-        else:
-            connection = connect_db()
+            return render_template("register.html.jinja")
 
-            cursor = connection.cursor()
-       
+        connection = connect_db()
+        cursor = connection.cursor()
+
         try:    
             cursor.execute("""
-                INSERT INTO `User` ( `Name`, `Email`, `Password`, `Address`)
-                            VALUES (%s, %s, %s, %s)
-                """, (name, email, password, address))
-            connection.close()
+                INSERT INTO `User` (`Name`, `Email`, `Password`, `Address`)
+                VALUES (%s, %s, %s, %s)
+            """, (name, email, password, address))
+
+            connection.commit()
 
         except pymysql.err.IntegrityError: 
-                flash("Email already registered!")
-                connection.close()
-        else:
-            return redirect('/login')
-        
-        return render_template("register.html.jinja")
+            flash("Email already registered!")
+            return render_template("register.html.jinja")
+
+        finally:
+            connection.close()
+
+        return redirect('/login')
+
+    return render_template("register.html.jinja")
 
 
 @app.route("/login", methods=["GET", "POST"])

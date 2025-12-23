@@ -11,31 +11,38 @@
 
 {% include "components/navbar.html.jinja" %}
 
-<main class="ml-64 max-w-4xl mx-auto p-6 pt-24">
+<main class="max-w-5xl mx-auto p-6 pt-24">
 
   <h1 class="text-3xl font-bold mb-6">
     Your Shopping Cart
   </h1>
 
   {% for x in cart %}
-  <div class="flex items-center bg-white rounded-lg shadow p-4 mb-4 gap-6">
+  <div class="grid grid-cols-5 items-center bg-white rounded-lg shadow p-4 mb-4 gap-4">
 
-    <img src="{{ x['Image'] }}" class="h-28 w-28 object-contain rounded border" >
+    <!-- Product Image -->
+    <img src="{{ x['Image'] }}"
+         class="h-24 w-24 object-contain rounded border">
 
+    <!-- Product Name -->
+    <div class="col-span-2 font-semibold">
+      {{ x['Name'] }}
+    </div>
 
- 
-   <div> {{ x['Name'] }}</div>
+    <!-- Quantity -->
+    <div class="text-center">
+      Qty: {{ x['Quantity'] }}
+    </div>
 
-
-     <div>{{x['Quantity']}}</div>
-    
-    <!-- Price -->
-    <div> ${{ x['Price'] }} </div>
-    {#
-    <div> ${{x['price'] * x['Quantity'] }}</div> #}
+    <!-- Price + Subtotal -->
+    <div class="text-right">
+      <div class="font-semibold">${{ x['Price'] }}</div>
+      <div class="text-sm text-gray-600">
+        Subtotal: ${{ x['Price'] * x['Quantity'] }}
+      </div>
+    </div>
 
   </div>
-
   {% endfor %}
 
 </main>

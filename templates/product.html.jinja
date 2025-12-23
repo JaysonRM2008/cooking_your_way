@@ -35,7 +35,7 @@
         {{ product['Description'] }}
       </div>
 
-      <!-- ADD TO CART FORM (THIS IS REQUIRED) -->
+      <!-- ADD TO CART FORM  -->
       <form
         method="post"
         action="/product/{{ product['ID'] }}/add_to_cart"
@@ -48,11 +48,7 @@
             Quantity:
           </label>
 
-          <input
-            type="number"
-            name="qty"
-            value="1"
-            min="1"
+          <input type="number" name="qty" value="1" min="1"
             class="w-20 border border-gray-300 rounded-md px-2 py-1 text-center
                    focus:outline-none focus:ring-2 focus:ring-yellow-400"
           >

@@ -1,44 +1,54 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  </head>
-  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Register</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
 {% include "components/navbar.html.jinja" %}
 
-{% for message in ("get_flashed_messages")%}
-<li>{{message}}</li>
-{%endfor%}
-
- <form method="post" class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg grid grid-cols-2 gap-4">
-    <label> Name</label>
-    <input name="name" required>
-
-  <label>Email</label>
-    <input name="email" required type="email">
-
-    <label> Password </label>
-    <input name="password" required type="password">
-
-      <label> Confirm Password </label>
-    <input name="confirm_password" required type="password">
-
-<label>Address</label>
-<input name="address" required >
-
-<button type="submit" class="w-full mt-4 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition">Register</button>
- 
-    </form>
+<!-- Flash Messages -->
+<div class="max-w-lg mx-auto mt-24 mb-4">
+  {% for message in get_flashed_messages() %}
+    <div class="bg-red-100 text-red-700 px-4 py-2 rounded mb-2">
+      {{ message }}
+    </div>
+  {% endfor %}
 </div>
 
+<!-- Register Form -->
+<form
+  method="post"
+  class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg mx-auto grid grid-cols-2 gap-4"
+>
+
+  <label class="font-semibold">Name</label>
+  <input name="name" required class="border rounded px-3 py-2">
+
+  <label class="font-semibold">Email</label>
+  <input name="email" type="email" required class="border rounded px-3 py-2">
+
+  <label class="font-semibold">Password</label>
+  <input name="password" type="password" required class="border rounded px-3 py-2">
+
+  <label class="font-semibold">Confirm Password</label>
+  <input name="confirm_password" type="password" required class="border rounded px-3 py-2">
+
+  <label class="font-semibold">Address</label>
+  <input name="address" required class="border rounded px-3 py-2 col-span-2">
+
+  <button
+    type="submit"
+    class="col-span-2 mt-4 bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition"
+  >
+    Register
+  </button>
+
+</form>
+
 </body>
-
-
-    
- 
-
-    </main>
-  </body>
 </html>
