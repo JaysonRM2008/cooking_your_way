@@ -98,7 +98,7 @@ def product_page(product_id):
 @login_required
 def add_to_cart(product_id):
 
-    quantity = request.form["qty"]
+    quantity = int(request.form["qty"])
 
     connection = connect_db()
     cursor = connection.cursor()
@@ -110,7 +110,7 @@ def add_to_cart(product_id):
         `Quantity` = `Quantity` + %s
     """ , (quantity, product_id, current_user.id, quantity) )
     
-    
+    connection.commit()
     connection.close()
 
 
@@ -213,4 +213,35 @@ def logout():
     logout_user()
     return redirect('/') 
 
+@app.route("/cart/<product_id>/update_qty", methods=["POST"])
+@login_required
+def update_cart(product_id):
+    new_quantity = request.form["Quantity"]
+    connection = connect_db()
+    cursor = connection.cursor()
+    
+    cursor.execute("""
+        UPDATE `Cart` 
+        SET `Quantity` = %s
+        WHERE `ProductID` =%s AND `UserID` = %s
+        """, (new_quantity, product_id, current_user.id) )
+    connection.close()
 
+    return redirect('/cart')
+
+
+
+@app.route("/cart/<product_id>/remove", methods=["POST"])
+@login_required
+def remove(product_id):
+   
+    connection = connect_db()
+    cursor = connection.cursor()
+    
+    cursor.execute("""
+        DELETE FROM `Cart` 
+        WHERE `ProductID` =%s AND `UserID` = %s
+        """, (product_id, current_user.id) )
+    connection.close()
+
+    return redirect('/cart')
