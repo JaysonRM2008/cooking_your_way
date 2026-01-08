@@ -1,0 +1,139 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Checkout</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+{% include "components/navbar.html.jinja" %}
+
+<main class="ml-64 px-4 md:px-8 py-8">
+
+  <h1 class="text-3xl font-bold mb-6">
+    Your Checkout Cart
+  </h1>
+
+  {% if cart|length == 0 %}
+    <p class="text-gray-600 text-lg">
+      Your Checkout Cart is empty.
+    </p>
+  {% else %}
+
+  <!-- Layout -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- CART ITEMS -->
+    <div class="lg:col-span-2">
+
+      {% for x in cart %}
+      <div class="grid grid-cols-6 items-center bg-white rounded-lg shadow p-4 mb-4 gap-4">
+
+        <!-- Product Image -->
+        <img
+          src="{{ x['Image'] }}" alt="{{ x['Name'] }}"
+          class="h-24 w-24 object-contain rounded border"
+        >
+
+        <!-- Product Name -->
+        <div class="col-span-2 font-semibold">
+          {{ x['Name'] }}
+        </div>
+
+        <!-- Quantity Update -->
+        <div class="text-center">
+          <form method="post" action="/cart/{{ x['ProductID'] }}/update_qty"
+                class="flex items-center gap-2 justify-center">
+            <input name="Quantity" type="number" value="{{ x['Quantity'] }}" min="1"
+              class="w-16 border rounded px-2 py-1 text-center"
+            >
+            <button type="submit"
+class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm">
+              Update
+            </button>
+          </form>
+        </div>
+
+        <!-- Remove Button -->
+        <div class="text-center">
+          <form method="post" action="/cart/{{ x['ProductID'] }}/remove">
+            <button type="submit"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">
+              Remove
+            </button>
+          </form>
+        </div>
+
+        <!-- Price + Subtotal -->
+        <div class="text-right">
+          <div class="font-semibold">
+            ${{ x['Price'] }}
+          </div>
+          <div class="text-sm text-gray-600">
+            Subtotal: ${{ x['Price'] * x['Quantity'] }}
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <!-- SHIPPING ADDRESS BOX -->
+    <div class="bg-white rounded-lg shadow p-5 h-fit">
+
+      <h2 class="text-lg font-bold mb-4">
+        Shipping Address
+      </h2>
+
+      <form method="post" action="/place_order" class="space-y-3 text-sm">
+
+        <div>
+          <label class="block font-semibold mb-1">Street</label>
+          <input type="text" name="street" placeholder="123 Main St" required
+            class="w-full border rounded-md px-2 py-1
+                   focus:outline-none focus:ring-2 focus:ring-blue-400">
+        </div>
+
+        <div>
+          <label class="block font-semibold mb-1">City</label>
+          <input type="text" name="city" placeholder="New York" required
+            class="w-full border rounded-md px-2 py-1
+                   focus:outline-none focus:ring-2 focus:ring-blue-400"
+>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold mb-1">State</label>
+            <input type="text" name="state" placeholder="NY" required
+              class="w-full border rounded-md px-2 py-1
+                     focus:outline-none focus:ring-2 focus:ring-blue-400">
+          </div>
+
+          <div>
+            <label class="block font-semibold mb-1">Zip</label>
+            <input type="text" name="zip" placeholder="10001" required
+              class="w-full border rounded-md px-2 py-1
+                     focus:outline-none focus:ring-2 focus:ring-blue-400">
+          </div>
+        </div>
+
+        <button class="bg-yellow-500 hover:bg-white-600 text-white px-4 py-2 rounded text-sm" type="submit">
+<a href="{{ url_for('thank_you') }}" class="checkout-button">Order</a>
+</button>
+
+      </form>
+    </div>
+
+  </div>
+
+  {% endif %}
+
+</main>
+
+</body>
+</html>

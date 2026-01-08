@@ -125,7 +125,7 @@ def cart():
     cursor = connection.cursor()
     cursor.execute("""
         SELECT * FROM `Cart` 
-        JOIN `Product` ON `Cart`.`ProductID` = `Cart`.`ProductID`
+        JOIN `Product` ON `Cart`.`ProductID` = `Product`.`ID`
         WHERE `UserID` =  %s 
         """, (current_user.id,) )
     result = cursor.fetchall()
@@ -245,3 +245,42 @@ def remove(product_id):
     connection.close()
 
     return redirect('/cart')
+
+
+
+
+@app.route("/checkout", methods=["GET", "POST"])
+@login_required
+def checkout():
+    connection = connect_db()
+
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT * FROM `Cart` 
+        JOIN `Product` ON `Cart`.`ProductID` = `Product`.`ID`
+        WHERE `UserID` =  %s 
+        """, (current_user.id,) )
+    result = cursor.fetchall()
+
+    sale = cursor.lastrowid
+    if request.method == "POST":
+        # create the sale in the database
+        cursor.execute(" INSERT INTO `Sale` (`UserID`) VALUES (%s)", (current_user.id,) )
+        # store products bought
+        for item in result:
+            cursor.execute(" INSERT INTO `SaleProduct` (`SaleID`, `ProductID`, `Quantity`) VALUSE (%s %s %s) ", (sale, item['ProductID'], item['Quantity']) )
+        # empty cart
+        cursor.execute(" DELETE FROM `Cart` WHERE `UserID` = %s", (current_user.id,) )
+        # thank you screen
+        #TODO: Make a thank you page + Route
+        redirect('/thank-you')
+
+    connection.close()
+
+    return render_template("checkout.html.jinja" , cart=result)
+
+
+@app.route("/thank-you")
+@login_required
+def thank_you():
+    return render_template("thank_you.html.jinja")

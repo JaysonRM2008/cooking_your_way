@@ -24,6 +24,7 @@
   {% endif %}
 
   {% for x in cart %}
+  
   <div class="grid grid-cols-6 items-center bg-white rounded-lg shadow p-4 mb-4 gap-4">
 
     <!-- Product Image -->
@@ -74,9 +75,11 @@
         Subtotal: ${{ x['Price'] * x['Quantity'] }}
       </div>
     </div>
-
   </div>
   {% endfor %}
+<button class="bg-yellow-500 hover:bg-white-600 text-white px-4 py-2 rounded text-sm" type="submit">
+<a href="{{ url_for('checkout') }}" class="checkout-button">Proceed to Checkout</a>
+</button>
 
 </main>
 
