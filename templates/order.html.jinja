@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>My Orders</title>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+{% include "components/navbar.html.jinja" %}
+
+<main class="ml-64 px-4 md:px-8 py-10">
+
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900">My Orders</h1>
+    <p class="text-gray-600 mt-1">
+      View your past orders and their status
+    </p>
+  </div>
+
+  {% if orders|length == 0 %}
+    <div class="bg-white p-6 rounded-xl shadow text-gray-600">
+      You have no orders yet.
+    </div>
+  {% endif %}
+
+  <!-- Orders Grid -->
+  <div class="space-y-6">
+
+    {% for order in orders %}
+    <div class="bg-white rounded-2xl shadow-lg p-6">
+
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900">
+            Order #{{ order['ID'] }}
+          </h2>
+          <p class="text-sm text-gray-500">
+            Placed on {{ order['Date'] }}
+          </p>
+        </div>
+
+        <!-- Status Badge -->
+        <span
+          class="px-4 py-1 rounded-full text-sm font-semibold
+          {% if order['Status'] == 'Delivered' %}
+            bg-green-100 text-green-700
+          {% elif order['Status'] == 'Shipped' %}
+            bg-blue-100 text-blue-700
+          {% else %}
+            bg-yellow-100 text-yellow-700
+          {% endif %}
+          "
+        >
+          {{ order['Status'] }}
+        </span>
+      </div>
+
+      <!-- Order Info -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+
+        <div>
+          <p class="text-gray-500">Items</p>
+          <p class="font-semibold">{{ order['ItemCount'] }}</p>
+        </div>
+
+        <div>
+          <p class="text-gray-500">Total</p>
+          <p class="font-semibold">${{ order['Total'] }}</p>
+        </div>
+
+        <div class="col-span-2">
+          <p class="text-gray-500">Shipping Address</p>
+          <p class="font-semibold">
+            {{ order['Address'] }}
+          </p>
+        </div>
+
+      </div>
+
+      <div class="mt-6 flex gap-4">
+        <a href="/order/{{ order['ID'] }}"
+           class="bg-blue-600 hover:bg-blue-700
+                  text-white px-5 py-2 rounded-lg
+                  font-semibold transition">
+          View Details
+        </a>
+
+        <a href="/order/{{ order['ID'] }}/track"
+           class="border border-gray-300 hover:bg-gray-100
+                  px-5 py-2 rounded-lg font-semibold transition">
+          Track Order
+        </a>
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+</main>
+
+</body>
+</html>

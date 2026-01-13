@@ -99,7 +99,7 @@
 
     </div>
 
-    <!-- RIGHT: SHIPPING + PLACE ORDER -->
+    <!-- SHIPPING + PLACE ORDER -->
     <div class="bg-white rounded-lg shadow p-5 h-fit">
 
       <h2 class="text-lg font-bold mb-4">Shipping Address</h2>
@@ -109,61 +109,45 @@
 
         <div>
           <label class="block font-semibold mb-1">Street</label>
-          <input
-            type="text"
-            name="street"
-            required
-            placeholder="123 Main St"
-            class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
+          <input type="text" name="street" placeholder="123 Main St" required
+            class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
         </div>
 
         <div>
           <label class="block font-semibold mb-1">City</label>
-          <input
-            type="text"
-            name="city"
-            required
-            placeholder="New York"
-            class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          >
+          <input type="text" name="city" placeholder="New York" required
+            class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
         </div>
 
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block font-semibold mb-1">State</label>
-            <input
-              type="text"
-              name="state"
-              required
-              placeholder="NY"
-              class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
+            <input type="text" name="state" placeholder="NY" required
+              class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
           </div>
 
           <div>
             <label class="block font-semibold mb-1">Zip</label>
             <input
-              type="text"
-              name="zip"
-              required
-              placeholder="10001"
-              class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
+              type="text" name="zip" placeholder="10001" required
+              class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
           </div>
         </div>
+ 
+  <!-- shipping inputs here -->
 
-        <!-- Place Order Button -->
-        <button
-          type="submit"
-          class="w-full mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 rounded-lg transition"
-        >
-          Place Order
-        </button>
 
-      </form>
+<form action="/thank_you" method="post">
+<div  class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition hover:scale-[1.02]"
+>
+  <button
+    type="submit"  >
+Place Order  
+</button>
+</div>
+</form>
+  
 
-    </div>
 
   </div>
 

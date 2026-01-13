@@ -1,55 +1,109 @@
 <!-- Left Sidebar Navigation -->
-<nav class="fixed top-0 left-0 h-full w-64 bg-white shadow-md border-r border-gray-200 z-20">
+<nav class="fixed top-0 left-0 h-full w-64 bg-white shadow-lg border-r border-gray-200 z-20">
   <div class="flex flex-col h-full p-6">
 
-    <!-- User Info -->
-    {% if current_user.is_authenticated %}
-      <p class="mb-6 text-gray-800 font-semibold">
-        Hi {{ current_user.name }}
+    <!-- Brand -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-extrabold text-gray-900">
+        Cooking<span class="text-yellow-500">Your Way</span>
+      </h1>
+      <p class="text-sm text-gray-500">
+        Shop & Cook
       </p>
-    {% endif %}
+    </div>
+
+    <!-- USER DROPDOWN -->
+    <div class="relative mb-6 group">
+
+      <button
+        class="w-full flex items-center justify-between px-4 py-3 rounded-xl
+               bg-gray-900 text-white font-bold
+               hover:bg-gray-800 transition shadow"
+      >
+        <span class="flex items-center gap-2">
+          
+          {% if current_user.is_authenticated %}
+            {{ current_user.name }}
+          {% else %}
+            Account
+          {% endif %}
+        </span>
+        ▾
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div
+        class="absolute left-0 mt-2 w-full bg-white rounded-xl shadow-lg
+               border border-gray-200 opacity-0 invisible
+               group-hover:opacity-100 group-hover:visible
+               transition-all duration-200 z-50"
+      >
+
+        {% if not current_user.is_authenticated %}
+          <a href="/login"
+             class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-xl">
+            Login
+          </a>
+        {% else %}
+          <a href="/order"
+             class="block px-4 py-3 text-gray-700 hover:bg-gray-100 rounded-t-xl">
+             Orders
+          </a>
+
+          <a href="/logout"
+             class="block px-4 py-3 text-red-600 hover:bg-red-50 rounded-b-xl">
+             Logout
+          </a>
+        {% endif %}
+
+      </div>
+    </div>
 
     <!-- Navigation Links -->
-    <ul class="flex flex-col space-y-6 text-lg">
+    <ul class="flex flex-col space-y-3 text-lg">
 
       <li>
-        <a href="/" class="text-gray-600 hover:text-blue-600 font-medium transition">
-          Home
+        <a href="/"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl
+                  text-gray-700 font-medium
+                  hover:bg-gray-100 hover:text-gray-900 transition">
+           Home
         </a>
       </li>
 
       <li>
-        <a href="/browse" class="text-gray-600 hover:text-blue-600 font-medium transition">
+        <a href="/browse"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl
+                  text-gray-700 font-medium
+                  hover:bg-gray-100 hover:text-gray-900 transition">
           Browse
         </a>
       </li>
 
-      {% if not current_user.is_authenticated %}
-        <li>
-          <a href="/login" class="text-gray-600 hover:text-blue-600 font-medium transition">
-            Login
-          </a>
-        </li>
-      {% else %}
-        <li>
-          <a href="/logout" class="text-gray-600 hover:text-blue-600 font-medium transition">
-            Logout
-          </a>
-        </li>
-      {% endif %}
-
       <li>
-        <a href="/cart" class="text-gray-600 hover:text-blue-600 font-medium transition">
-          Cart
+        <a href="/cart"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl
+                  text-gray-700 font-medium
+                  hover:bg-gray-100 hover:text-gray-900 transition">
+           Cart
         </a>
       </li>
 
       <li>
-        <a href="/conatct" class="text-gray-600 hover:text-blue-600 font-medium transition">
-          Conatct
+        <a href="/contact"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl
+                  text-gray-700 font-medium
+                  hover:bg-gray-100 hover:text-gray-900 transition">
+           Contact
         </a>
       </li>
 
     </ul>
+
+    <!-- Footer -->
+    <div class="mt-auto pt-6 text-xs text-gray-400">
+      © 2026 ChefHub
+    </div>
+
   </div>
 </nav>

@@ -280,7 +280,32 @@ def checkout():
     return render_template("checkout.html.jinja" , cart=result)
 
 
-@app.route("/thank-you")
+@app.route("/thank_you")
 @login_required
 def thank_you():
     return render_template("thank_you.html.jinja")
+
+@app.route("/order")
+@login_required
+def Order():
+    connection = connect_db()
+    cursor = connection.cursor()
+    cursor.execute("""
+    SELECT
+        `Sale`.`ID`,
+        `Sale`.`Timestamp`, 
+        SUM(`SalesCart`.`Quantity`) AS 'Quantity', 
+        SUM(`SalesCart`.`Quantity` * `Product`.`Price`) AS 'Total'
+    FROM `Sale`
+    JOIN `SalesCart` ON `SalesCart`.`SaleID` = `Sale`.`ID`
+    JOIN `Product`ON `Product`.`ID` = `SalesCart`.`ProductID`
+    WHERE `UserID` = %s 
+    GROUP BY `Sale`.`ID`;
+    """, (current_user.id,) )
+
+    result = cursor.fetchall()
+    connection.close()  
+
+    return render_template("order.html.jinja", order=result)
+
+
