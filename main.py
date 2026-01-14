@@ -25,7 +25,6 @@ class User:
     def __init__(self, result):
         self.name = result['Name']
         self.email = result['Email']
-        self.address = result['Address']
         self.id = result['ID']
     def get_id(self):
         return str(self.id)
@@ -78,7 +77,7 @@ def browse():
 
 @app.route("/product/<product_id>")
 def product_page(product_id):
-
+ 
     connection = connect_db()
 
     cursor = connection.cursor()
@@ -87,11 +86,28 @@ def product_page(product_id):
 
     result = cursor.fetchone()
 
+    cursor.close()
+
+    connection = connect_db()
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+    SELECT * FROM `Review` WHERE `ProductID` = %s",
+                   
+    JOIN `User` ON `Review`.`UserID` = `User`.`ID`
+    WHERE `ProductID` = %s 
+    
+
+    """(product_id,) )
+
+    reviews = cursor.fetchall()
+
     connection.close() 
 
     if result is None:
         abort(404)
-    return render_template("product.html.jinja", product=result)
+    return render_template("product.html.jinja", product=result , reviews=reviews)
 
 
 @app.route("/product/<product_id>/add_to_cart", methods=["POST"])
@@ -142,7 +158,6 @@ def register():
         email = request.form["email"]
         password = request.form["password"]
         confirm_password = request.form["confirm_password"]
-        address = request.form["address"]
 
         # Validation
         if password != confirm_password:
@@ -158,9 +173,10 @@ def register():
 
         try:    
             cursor.execute("""
-                INSERT INTO `User` (`Name`, `Email`, `Password`, `Address`)
-                VALUES (%s, %s, %s, %s)
-            """, (name, email, password, address))
+    INSERT INTO `User` (`Name`, `Email`, `Password`)
+    VALUES (%s, %s, %s)
+""", (name, email, password))
+
 
             connection.commit()
 
