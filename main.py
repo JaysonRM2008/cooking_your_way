@@ -93,13 +93,13 @@ def product_page(product_id):
     cursor = connection.cursor()
 
     cursor.execute("""
-    SELECT * FROM `Review` WHERE `ProductID` = %s",
-                   
-    JOIN `User` ON `Review`.`UserID` = `User`.`ID`
-    WHERE `ProductID` = %s 
+    SELECT * FROM `Review`
     
-
-    """(product_id,) )
+    JOIN `User` ON `Review`.`UserID` = `User`.`ID` 
+                   
+    WHERE `ProductID` = %s
+    
+    """, (product_id,) )
 
     reviews = cursor.fetchall()
 
@@ -324,4 +324,28 @@ def Order():
 
     return render_template("order.html.jinja", order=result)
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html.jinja"), 404
+
+
+@app.route("/product/<product_id>/review", methods=["POST"])
+@login_required
+def add_review(product_id):
+    # Get review from the form
+    rating = request.form["rating"]
+    comment = request.form["comments"]
+
+    connection = connect_db()
+
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        INSERT INTO `Review` (`Rating`, `Comment`, `ProductID`, `UserID)
+        VALUES (%s, %s, %s, %s)
+    """, (rating , comment, product_id, current_user.id) )
+
+    connection.close()
+
+    return redirect(f"/product/{product_id}")
 

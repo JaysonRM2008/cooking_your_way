@@ -31,7 +31,7 @@
     {{ product['Description'] }}</p>
 
   <!-- Add To Cart Form -->
-  <form method="POST" action="/product/{{ product['ID'] }}/add_to_cart" class="mt-8">
+<form method="POST" action="/product/{{ product['ID'] }}/add_to_cart" class="mt-8">
 
     <!-- Quantity -->
     <div class="flex justify-center items-center gap-3 mb-6">
@@ -62,54 +62,75 @@
 
 
 
-{% if reviews %}
-  <h2 class="text-2xl font-bold mt-12 mb-6 text-center">
-    Customer Reviews
-  </h2>
+ <!-- Reviews List -->
+  {% if reviews %}
+    <h2 class="text-2xl font-bold mt-12 mb-6 text-center">Customer Reviews</h2>
 
-  {% for review in reviews %}
-    <div class="bg-white p-4 rounded-lg shadow mb-4">
+    {% for review in reviews %}
+      <div class="bg-white p-4 rounded-lg shadow mb-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-semibold">{{ review['User'] }}</h3>
+          <span class="text-sm text-gray-500">
+            {{ review['CreatedAt'].strftime("%b %d, %Y %I:%M %p") }}
+          </span>
+        </div>
 
-      <!-- User + Time -->
-      <div class="flex justify-between items-center">
-        <h3 class="font-semibold">
-          {{ review['User'] }}
-        </h3>
+        <p class="text-gray-700 mt-2">{{ review['Comment'] }}</p>
 
-        <span class="text-sm text-gray-500">
-          {{ review['CreatedAt'].strftime("%b %d, %Y %I:%M %p") }}
-        </span>
+        <div class="mt-2 text-yellow-500">
+          {% for i in range(1, 6) %}
+            {% if i <= review['Rating'] %}★{% else %}☆{% endif %}
+          {% endfor %}
+        </div>
       </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center text-gray-500 mt-8">
+      No reviews yet. Be the first to review this product!
+    </p>
+  {% endif %}
 
-      <!-- Comment -->
-      <p class="text-gray-700 mt-2">
-        {{ review['Comment'] }}
-      </p>
-
-      <!-- Rating stars (FOR LOOP) -->
-      <div class="mt-2 text-yellow-500">
-        {% for i in range(1, 6) %}
-          {% if i <= review['Rating'] %}
-            ★
-          {% else %}
-            ☆
-          {% endif %}
-        {% endfor %}
-      </div>
-
-    </div>
-  {% endfor %}
-{% else %}
-  <p class="text-center text-gray-500 mt-8">
-    No reviews yet. Be the first to review this product!
-  </p>
-{% endif %}
+  </form>
 
 
-</form>
-  
+
+<h2 class="text-xl font-semibold mb-6 text-center">
+<div class="flex justify-center">
+
+      <form  method="post" action="/product/{{ product['ID'] }}/review" class="bg-gray-50 border rounded-xl p-6 mb-8"
+        class="w-full max-w-xl bg-gray-50 border rounded-xl p-6 mb-8">
+
+    <label class="block font-medium mb-2">
+
+        <input
+          type="number"
+          name="rating"
+          min="1"
+          max="5"
+          class="w-full border border-gray-300 rounded-md p-2 mb-4
+             focus:outline-none focus:ring-2 focus:ring-blue-400"
+    >
+
+        <br>
+        <br>
+<label class="block font-medium mb-2">comments</label>
+        <textarea
+          name="comments"
+class="w-full border border-gray-300 rounded-md p-2 mb-4
+             focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>          
+    <div class="flex justify-center">
+        <button
+          type="submit"
+class="bg-black text-white px-6 py-2 rounded-md
+               hover:bg-gray-800 transition">
+          Submit Review
+        </button>
+      </form>
+</div>
+
+
+
 
 </main>
-
-</body>
+  </body>
 </html>

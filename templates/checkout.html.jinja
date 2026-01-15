@@ -100,52 +100,50 @@
     </div>
 
     <!-- SHIPPING + PLACE ORDER -->
-    <div class="bg-white rounded-lg shadow p-5 h-fit">
-
-      <h2 class="text-lg font-bold mb-4">Shipping Address</h2>
+<div class="bg-white rounded-lg shadow p-5 h-fit">
+  <h2 class="text-lg font-bold mb-4">Shipping Address</h2>
 
       <!-- This form places the order -->
-      <form method="post" action="/place_order" class="space-y-3 text-sm">
+  <form method="post" action="/thank_you" class="space-y-3 text-sm">
 
         <div>
-          <label class="block font-semibold mb-1">Street</label>
-          <input type="text" name="street" placeholder="123 Main St" required
-            class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        </div>
+      <label class="block font-semibold mb-1">Street</label>
+      <input type="text" name="street" placeholder="123 Main St" required
+        class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
 
-        <div>
-          <label class="block font-semibold mb-1">City</label>
-          <input type="text" name="city" placeholder="New York" required
-            class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        </div>
+    <div>
+      <label class="block font-semibold mb-1">City</label>
+      <input type="text" name="city" placeholder="New York" required
+        class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
 
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block font-semibold mb-1">State</label>
-            <input type="text" name="state" placeholder="NY" required
-              class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
-          </div>
+    <div class="grid grid-cols-2 gap-2">
+      <div>
+        <label class="block font-semibold mb-1">State</label>
+        <input type="text" name="state" placeholder="NY" required
+          class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      </div>
 
-          <div>
-            <label class="block font-semibold mb-1">Zip</label>
-            <input
-              type="text" name="zip" placeholder="10001" required
-              class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
-          </div>
-        </div>
- 
-  <!-- shipping inputs here -->
+      <div>
+        <label class="block font-semibold mb-1">Zip</label>
+        <input type="text" name="zip" placeholder="10001" required
+          class="w-full border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      </div>
+    </div>
 
 
-<form action="/thank_you" method="post">
-<div  class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition hover:scale-[1.02]"
->
-  <button
-    type="submit"  >
-Place Order  
-</button>
+       <!-- Button inside same form -->
+    <button
+      type="submit"
+      class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition hover:scale-[1.02] active:scale-[0.98]"
+    >
+      Place Order
+    </button>
+
+  </form>
 </div>
-</form>
+
   
 
 
