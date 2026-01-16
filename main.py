@@ -101,13 +101,13 @@ def product_page(product_id):
     
     """, (product_id,) )
 
-    reviews = cursor.fetchall()
+    review = cursor.fetchall()
 
     connection.close() 
 
     if result is None:
         abort(404)
-    return render_template("product.html.jinja", product=result , reviews=reviews)
+    return render_template("product.html.jinja", product=result , review=review)
 
 
 @app.route("/product/<product_id>/add_to_cart", methods=["POST"])
@@ -281,15 +281,15 @@ def checkout():
     sale = cursor.lastrowid
     if request.method == "POST":
         # create the sale in the database
-        cursor.execute(" INSERT INTO `Sale` (`UserID`) VALUES (%s)", (current_user.id,) )
+        cursor.execute("INSERT INTO `Sale` (`UserID`) VALUES (%s)", (current_user.id,))
+        sale = cursor.lastrowid  # Retrieve the last inserted sale ID
         # store products bought
         for item in result:
-            cursor.execute(" INSERT INTO `SaleProduct` (`SaleID`, `ProductID`, `Quantity`) VALUSE (%s %s %s) ", (sale, item['ProductID'], item['Quantity']) )
+            cursor.execute("INSERT INTO `SaleProduct` (`SaleID`, `ProductID`, `Quantity`) VALUES (%s, %s, %s)", (sale, item['ID'], item['quantity']))
         # empty cart
-        cursor.execute(" DELETE FROM `Cart` WHERE `UserID` = %s", (current_user.id,) )
+        cursor.execute("DELETE FROM `Cart` WHERE `UserID` = %s", (current_user.id,))
         # thank you screen
-        #TODO: Make a thank you page + Route
-        redirect('/thank-you')
+        return redirect('/thank_you')
 
     connection.close()
 
@@ -333,18 +333,18 @@ def page_not_found(e):
 @login_required
 def add_review(product_id):
     # Get review from the form
-    rating = request.form["rating"]
-    comment = request.form["comments"]
+    rating = request.form['rating']
+    comments = request.form["comments"]
 
     connection = connect_db()
 
     cursor = connection.cursor()
 
     cursor.execute("""
-        INSERT INTO `Review` (`Rating`, `Comment`, `ProductID`, `UserID)
+        INSERT INTO `Review` (`Rating`, `Comments`, `ProductID`, `UserID`)
         VALUES (%s, %s, %s, %s)
-    """, (rating , comment, product_id, current_user.id) )
-
+    """, (rating, comments, product_id, current_user.id))
+    connection.commit() 
     connection.close()
 
     return redirect(f"/product/{product_id}")
